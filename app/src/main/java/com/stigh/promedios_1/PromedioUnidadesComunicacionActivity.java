@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
     private EditText obj2txtncPC, obj2txtncIC, obj2txtncEP, obj2txtncTotal; //2da Unidad
     private EditText obj3txtncPC, obj3txtncIC, obj3txtncEP, obj3txtncTotal; //3era Unidad
     private ImageButton objbtnRegresar;
+    private Button objbtnPromTotal;
 
     private EditText objtxtnPromTotal;
 
@@ -29,6 +32,8 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
     private double compc2, comic2, comep2, comunicaciontotal2; //2da Unidad
     private double compc3, comic3, comep3, comunicaciontotal3; //3era Unidad
     private double comunicacionPromTotal;
+
+    private Toast toast;
 
     protected void onCreate (Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -62,6 +67,16 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PromedioUnidadesComunicacionActivity.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        objbtnPromTotal = (Button) findViewById(R.id.btnPromTotal);
+        //Accion al Boton Calcular Promedio Total
+        objbtnPromTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calcularPromedioTotal();
             }
         });
 
@@ -211,56 +226,6 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
             }
         });
 
-        //PROMEDIO TOTAL:
-        obj1txtncTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        obj2txtncTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        obj3txtncTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
 
     }
 
@@ -274,7 +239,9 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
         comep1 = com1EP.isEmpty() ? 0.0 : Double.parseDouble(com1EP);
 
         if (compc1 < 0 || compc1 > 20 || comic1 < 0 || comic1 > 20 || comep1 < 0 || comep1 >20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -293,7 +260,9 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
         comep2 = com2EP.isEmpty() ? 0.0 : Double.parseDouble(com2EP);
 
         if (compc2 < 0 || compc2 > 20 || comic2 < 0 || comic2 > 20 || comep2 < 0 || comep2 > 20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -312,7 +281,9 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
         comep3 = com3EP.isEmpty() ? 0.0 : Double.parseDouble(com3EP);
 
         if (compc3 < 0 || compc3 > 20 || comic3 < 0 || comic3 > 20 || comep3 < 0 || comep3 > 20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -322,13 +293,17 @@ public class PromedioUnidadesComunicacionActivity extends AppCompatActivity {
     }
 
     private void calcularPromedioTotal(){
-        comunicacionPromTotal = (0.30 * comunicaciontotal1) + (0.30 * comunicaciontotal2) + (0.30 * comunicaciontotal3);
+        comunicacionPromTotal = (0.30 * comunicaciontotal1) + (0.30 * comunicaciontotal2) + (0.40 * comunicaciontotal3);
         String resultadoPromTotal = String.format("%.2f", comunicacionPromTotal);
         objtxtnPromTotal.setText(String.valueOf(resultadoPromTotal));
         if (Double.parseDouble(resultadoPromTotal) >= 10.5 ){
-            Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         } else if (Double.parseDouble(resultadoPromTotal) < 10.5) {
-            Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 }

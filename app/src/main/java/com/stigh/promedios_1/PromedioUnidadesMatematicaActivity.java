@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -19,12 +21,13 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
 
     private EditText objmpromTotal; //Promedio Total
     private ImageButton objbtnRegresar;
-
+    private Button objbtnPromTotal;
     //Declarando las Variables Operacionales:
     private double matpc1, matic1, matep1, matematica1Total; //1era Unidad
     private double matpc2, matic2, matep2, matematica2Total; //2da Unidad
     private double matpc3, matic3, matep3, matematica3Total; //2da Unidad
     private double matematicapromTotal; //Promedio Total
+    private Toast toast;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -56,6 +59,14 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PromedioUnidadesMatematicaActivity.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        objbtnPromTotal = (Button) findViewById(R.id.btnPromTotal);
+        objbtnPromTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calcularPromedioTotal();
             }
         });
         //Escuchar Unidad 1
@@ -208,56 +219,6 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
             }
         });
 
-        //Escuchar promedio Total
-        objutxtnmTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        objdtxtnmTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        objttxtnmTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
     }
 
     private void calcularPrimeraUnidadMatematica (){
@@ -270,7 +231,10 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
         matep1 = mat1EP.isEmpty() ? 0.0 : Double.parseDouble(mat1EP);
 
         if (matpc1 < 0 || matpc1 > 20 || matic1 < 0 || matic1 > 20 || matep1 < 0 || matep1 > 20){
-            Toast.makeText(getApplicationContext(), "Los valores deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los valores deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -289,7 +253,9 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
         matep2 = mat2EP.isEmpty() ? 0.0 : Double.parseDouble(mat2EP);
 
         if ( matpc2 < 0 || matpc2 > 20 || matic2 < 0 || matic2 > 20 || matep2 < 0 || matep2 > 20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -309,7 +275,9 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
         matep3 = mat3EP.isEmpty() ? 0.0 : Double.parseDouble(mat3EP);
 
         if (matpc3 < 0 || matpc3 > 20 || matic3 < 0 || matic3 > 20 || matep3 < 0 || matep3 > 20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -324,9 +292,13 @@ public class PromedioUnidadesMatematicaActivity extends AppCompatActivity {
         objmpromTotal.setText(String.valueOf(resultadoPromTotalMat));
 
         if (Double.parseDouble(resultadoPromTotalMat) >= 10.5){
-            Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }else if (Double.parseDouble(resultadoPromTotalMat) < 10.5){
-            Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
 
     }

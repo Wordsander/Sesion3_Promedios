@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
     private ImageButton objbtnRegresar;
 
     private EditText objtxtnPromTotal;
+    private Button objbtnPromTotal;
 
     /**
      * VARIABLES OPERACIONALES
@@ -30,6 +33,7 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
     private double filpc2, filic2, filep2, filosofiatotal2; //2da Unidad
     private double filpc3, filic3, filep3, filosofiatotal3; //3era Unidad
     private double filosofiaPromTotal;
+    private Toast toast;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,13 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
             }
         });
 
+        objbtnPromTotal = (Button) findViewById(R.id.btnPromTotal);
+        objbtnPromTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calcularPromedioTotal();
+            }
+        });
 
         // Escuchador de cambio de texto para el primer campo de texto // 1era Unidad
         obj1txtnfPC.addTextChangedListener(new TextWatcher() {
@@ -196,43 +207,7 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
             }
         });
 
-        //PROMEDIO TOTAL
-        obj1txtnfTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        obj2txtnfTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        obj3txtnfTotal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calcularPromedioTotal();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+
     }
 
     private void calcularPrimeraUnidadFilosofia() {
@@ -247,7 +222,9 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
 
         // Validar si los valores están dentro del rango deseado (0 a 20)
         if (filpc1 < 0 || filpc1 > 20 || filic1 < 0 || filic1 > 20 || filep1 < 0 || filep1 > 20) {
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -269,7 +246,9 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
         filep2 = fil2EP.isEmpty() ? 0.0 : Double.parseDouble(fil2EP);
 
         if (filpc2 < 0 || filpc2 > 20 || filic2 < 0 || filic2 > 20 || filep2 < 0 || filep2 > 20) {
-            Toast.makeText(getApplicationContext(), "Los datos deben de estar entre 0 y 20", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben de estar entre 0 y 20", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -289,7 +268,9 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
         filep3 = fil3EP.isEmpty() ? 0.0 : Double.parseDouble(fil3EP);
 
         if(filpc3 < 0 || filpc3 > 20 || filic3 < 0 || filic3 > 20 || filep3 < 0 || filep3 > 20){
-            Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20",Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "Los datos deben estar entre 0 y 20",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             return;
         }
 
@@ -299,13 +280,17 @@ public class PromedioUnidadesFilosofiaActivity extends AppCompatActivity {
     }
 
     private void calcularPromedioTotal(){
-        filosofiaPromTotal = ((0.30 * filosofiatotal1) + (0.30 * filosofiatotal2) + (0.30 * filosofiatotal3));
+        filosofiaPromTotal = ((0.30 * filosofiatotal1) + (0.30 * filosofiatotal2) + (0.40 * filosofiatotal3));
         String resultadoFormatoPromTotal = String.format("%.2f", filosofiaPromTotal);
         objtxtnPromTotal.setText(String.valueOf(filosofiaPromTotal));
         if (Double.parseDouble(resultadoFormatoPromTotal)  >= 10.5 ){
-            Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "APROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         } else if (Double.parseDouble(resultadoFormatoPromTotal) < 10.5) {
-            Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT).show();
+            toast = Toast.makeText(getApplicationContext(), "DESAPROBASTE EL CURSO", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
 
     }
